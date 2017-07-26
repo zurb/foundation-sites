@@ -1,11 +1,9 @@
 // Foundation for Sites by ZURB
 // foundation.zurb.com
 // Licensed under MIT Open Source
-
 ////
 /// @group grid
 ////
-
 /// Calculates the width of a column based on a number of factors.
 ///
 /// @param {Number|List} $columns
@@ -16,97 +14,78 @@
 ///
 /// @returns {Number} A calculated percentage value.
 @function grid-column($columns) {
-  $width: 0%;
-
-  // Parsing percents, decimals, and column counts
-  @if type-of($columns) == 'number' {
-    @if unit($columns) == '%' {
-      $width: $columns;
+    $width: 0%;
+    // Parsing percents, decimals, and column counts
+    @if type-of($columns)=='number' {
+        @if unit($columns)=='%' {
+            $width: $columns;
+        }
+        @else if $columns < 1 {
+            $width: percentage($columns);
+        }
+        @else {
+            $width: percentage($columns / $grid-column-count);
+        }
     }
-    @else if $columns < 1 {
-      $width: percentage($columns);
+    // Parsing "n of n" expressions
+    @else if type-of($columns)=='list' {
+        @if length($columns) !=3 {
+            @error 'Wrong syntax for grid-column(). Use the format "n of n".';
+        }
+        @else {
+            $width: percentage(nth($columns, 1) / nth($columns, 3));
+        }
     }
+    // Anything else is incorrect
     @else {
-      $width: percentage($columns / $grid-column-count);
+        @error 'Wrong syntax for grid-column(). Use a number, decimal, percentage, or "n of n".';
     }
-  }
-
-  // Parsing "n of n" expressions
-  @else if type-of($columns) == 'list' {
-    @if length($columns) != 3 {
-      @error 'Wrong syntax for grid-column(). Use the format "n of n".';
-    }
-    @else {
-      $width: percentage(nth($columns, 1) / nth($columns, 3));
-    }
-  }
-
-  // Anything else is incorrect
-  @else {
-    @error 'Wrong syntax for grid-column(). Use a number, decimal, percentage, or "n of n".';
-  }
-
-  @return $width;
+    @return $width;
 }
 
 /// Creates a grid column.
 ///
 /// @param {Mixed} $columns [$grid-column-count] - Width of the column. Refer to the `grid-column()` function to see possible values.
 /// @param {Mixed} $gutters [$grid-column-gutter] - Spacing between columns. Refer to the `grid-column-gutter()` function to see possible values.
-@mixin grid-column(
-  $columns: $grid-column-count,
-  $gutters: $grid-column-gutter
-) {
-  @include grid-column-size($columns);
-  float: $global-left;
-
-  // Gutters
-  @include grid-column-gutter($gutters: $gutters);
-
-  // Last column alignment
-  @if $grid-column-align-edge {
-    &:last-child:not(:first-child) {
-      float: $global-right;
+@mixin grid-column( $columns: $grid-column-count, $gutters: $grid-column-gutter) {
+    @include grid-column-size($columns);
+    float: $global-left;
+    // Gutters
+    @include grid-column-gutter($gutters: $gutters);
+    // Last column alignment
+    @if $grid-column-align-edge {
+        &:last-child:not(:first-child) {
+            float: $global-right;
+        }
     }
-  }
 }
 
 /// Creates a grid column row. This is the equivalent of adding `.row` and `.column` to the same element.
 ///
 /// @param {Mixed} $gutters [$grid-column-gutter] - Width of the gutters on either side of the column row. Refer to the `grid-column-gutter()` function to see possible values.
-@mixin grid-column-row(
-  $gutters: $grid-column-gutter
-) {
-  @include grid-row;
-  @include grid-column($gutters: $gutters);
-
-  &,
-  &:last-child {
-    float: none;
-  }
+@mixin grid-column-row( $gutters: $grid-column-gutter) {
+    @include grid-row;
+    @include grid-column($gutters: $gutters);
+    &,
+    &:last-child {
+        float: none;
+    }
 }
 
 /// Shorthand for `grid-column()`.
 /// @alias grid-column
-@function grid-col(
-  $columns: $grid-column-count
-) {
-  @return grid-column($columns);
+@function grid-col( $columns: $grid-column-count) {
+    @return grid-column($columns);
 }
 
 /// Shorthand for `grid-column()`.
 /// @alias grid-column
-@mixin grid-col(
-  $columns: $grid-column-count,
-  $gutters: $grid-column-gutter
-) {
-  @include grid-column($columns, $gutters);
+@mixin grid-col( $columns: $grid-column-count, $gutters: $grid-column-gutter) {
+    @include grid-column($columns, $gutters);
 }
 
 /// Shorthand for `grid-column-row()`.
 /// @alias grid-column-row
-@mixin grid-col-row(
-  $gutters: $grid-column-gutter
-) {
-  @include grid-column-row($gutters);
+@mixin grid-col-row( $gutters: $grid-column-gutter) {
+    @include grid-column-row($gutters);
 }
