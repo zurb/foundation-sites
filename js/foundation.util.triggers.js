@@ -239,21 +239,23 @@ Triggers.Initializers.addGlobalListeners = function() {
   Triggers.Initializers.addClosemeListener();
 }
 
+Triggers.Initializers.addAllListeners = function() {
+  Triggers.Initializers.addSimpleListeners();
+  Triggers.Initializers.addGlobalListeners();
+};
+
+Triggers.forceListenersNow = function() {
+  $(window).off('load', Triggers.Initializers.addAllListeners);
+  Triggers.Initializers.addAllListeners();
+};
 
 Triggers.init = function($, Foundation) {
   if (typeof($.triggersInitialized) === 'undefined') {
-    let $document = $(document);
-
     if(document.readyState === "complete") {
-      Triggers.Initializers.addSimpleListeners();
-      Triggers.Initializers.addGlobalListeners();
+      Triggers.Initializers.addAllListeners();
     } else {
-      $(window).on('load', () => {
-        Triggers.Initializers.addSimpleListeners();
-        Triggers.Initializers.addGlobalListeners();
-      });
+      $(window).on('load', Triggers.Initializers.addAllListeners);
     }
-
 
     $.triggersInitialized = true;
   }
