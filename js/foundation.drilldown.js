@@ -136,7 +136,8 @@ class Drilldown extends Plugin {
   }
 
   _resize() {
-    this.$wrapper.css({'max-width': 'none', 'min-height': 'none'});
+    this.$wrapper.get(0).style.maxWidth = 'none'; // TODO: test this
+    this.$wrapper.get(0).style.minHeight = 'none'; // TODO: test this
     // _getMaxDims has side effects (boo) but calling it should update all other necessary heights & widths
     this.$wrapper.css(this._getMaxDims());
   }
@@ -300,8 +301,10 @@ class Drilldown extends Plugin {
     $elem.addClass('is-closing');
 
     if (this.options.autoHeight) {
-      const calcHeight = $elem.parent().closest('ul').data('calcHeight');
-      this.$wrapper.css({ height: calcHeight });
+      const closest = $elem.parent().closest('ul');
+      // TODO: test this
+      const calcHeight = closest.length ? closest.get(0).getAttribute('data-calcHeight') : "";
+      this.$wrapper.get(0).style.height = calcHeight; // TODO: test this
     }
 
     /**
@@ -413,7 +416,7 @@ class Drilldown extends Plugin {
     // If target menu is root, focus first link & exit
     if ($elem.is('[data-drilldown]')) {
       if (autoFocus === true) $elem.find('li[role="treeitem"] > a').first().focus();
-      if (this.options.autoHeight) this.$wrapper.css('height', $elem.data('calcHeight'));
+      if (this.options.autoHeight) this.$wrapper.get(0).style.height = $elem.get(0).getAttribute('data-calcHeight'); // TODO: test this
       return;
     }
 
@@ -425,7 +428,8 @@ class Drilldown extends Plugin {
 
       // Update height of first child (target menu) if autoHeight option true
       if (index === 0 && _this.options.autoHeight) {
-        _this.$wrapper.css('height', $(this).data('calcHeight'));
+        // TODO: test this
+        _this.$wrapper.get(0).style.height = this.getAttribute('data-calcHeight');
       }
 
       var isLastChild = index == $submenus.length - 1;
@@ -475,7 +479,7 @@ class Drilldown extends Plugin {
    * @param {jQuery} $elem - the current sub-menu to hide, i.e. the `ul` tag.
    */
   _hide($elem) {
-    if(this.options.autoHeight) this.$wrapper.css({height:$elem.parent().closest('ul').data('calcHeight')});
+    if(this.options.autoHeight) this.$wrapper.css({height:$elem.parent().closest('ul').get(0).getAttribute('data-calcHeight')}); // TODO: test this
     var _this = this;
     $elem.parent('li').attr('aria-expanded', false);
     $elem.attr('aria-hidden', true);
@@ -508,6 +512,7 @@ class Drilldown extends Plugin {
       maxHeight = height > maxHeight ? height : maxHeight;
 
       if(_this.options.autoHeight) {
+        // TODO: research why the value differs with getAttribute
         $(this).data('calcHeight',height);
       }
     });

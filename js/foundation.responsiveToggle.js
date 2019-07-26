@@ -45,7 +45,7 @@ class ResponsiveToggle extends Plugin {
 
     this.$targetMenu = $(`#${targetID}`);
     this.$toggler = this.$element.find('[data-toggle]').filter(function() {
-      var target = $(this).data('toggle');
+      var target = this.getAttribute('data-toggle');
       return (target === targetID || target === "");
     });
     this.options = $.extend({}, this.options, this.$targetMenu.data());

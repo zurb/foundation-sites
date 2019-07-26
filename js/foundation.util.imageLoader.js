@@ -30,7 +30,8 @@ function onImagesLoaded(images, callback){
         $(this).off(events, me);
         singleImageLoaded();
       });
-      image.src = $(this).attr('src');
+      // TODO: test this
+      image.src = this.getAttribute('src');
     }
   });
 

@@ -33,7 +33,7 @@ Triggers.Listeners.Basic  = {
     triggers($(this), 'open');
   },
   closeListener: function() {
-    let id = $(this).data('close');
+    let id = this.getAttribute('data-close');
     if (id) {
       triggers($(this), 'close');
     }
@@ -42,7 +42,7 @@ Triggers.Listeners.Basic  = {
     }
   },
   toggleListener: function() {
-    let id = $(this).data('toggle');
+    let id = this.getAttribute('data-toggle');
     if (id) {
       triggers($(this), 'toggle');
     } else {
@@ -50,7 +50,7 @@ Triggers.Listeners.Basic  = {
     }
   },
   closeableListener: function(e) {
-    let animation = $(this).data('closable');
+    let animation = this.getAttribute('data-closable');
 
     // Only close the first closable element. See https://git.io/zf-7833
     e.stopPropagation();
@@ -64,7 +64,7 @@ Triggers.Listeners.Basic  = {
     }
   },
   toggleFocusListener: function() {
-    let id = $(this).data('toggle-focus');
+    let id = this.getAttribute('data-toggle-focus');
     $(`#${id}`).triggerHandler('toggle.zf.trigger', [$(this)]);
   }
 };

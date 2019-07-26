@@ -142,23 +142,25 @@ class Orbit extends Plugin {
   * @private
   * @param {Function} cb - a callback function to fire when complete.
   */
-  _setWrapperHeight(cb) {//rewrite this to `for` loop
+  _setWrapperHeight(cb) {
+    // TODO: rewrite this to `for` loop
     var max = 0, temp, counter = 0, _this = this;
 
     this.$slides.each(function() {
       temp = this.getBoundingClientRect().height;
-      $(this).attr('data-slide', counter);
+      this.setAttribute('data-slide', counter);
 
       // hide all slides but the active one
-      if (!/mui/g.test($(this)[0].className) && _this.$slides.filter('.is-active')[0] !== _this.$slides.eq(counter)[0]) {
-        $(this).css({'display': 'none'});
+      if (!/mui/g.test(this.className) && _this.$slides.filter('.is-active')[0] !== _this.$slides.eq(counter)[0]) {
+        this.style.display = 'none';
       }
       max = temp > max ? temp : max;
       counter++;
     });
 
     if (counter === this.$slides.length) {
-      this.$wrapper.css({'height': max}); //only change the wrapper height property once.
+      // TODO: test this
+      this.$wrapper.get(0).style.height = max; //only change the wrapper height property once.
       if(cb) {cb(max);} //fire callback with max height dimension.
     }
   }
@@ -170,7 +172,7 @@ class Orbit extends Plugin {
   */
   _setSlideHeight(height) {
     this.$slides.each(function() {
-      $(this).css('max-height', height);
+      this.style.maxHeight = height;
     });
   }
 
@@ -224,18 +226,18 @@ class Orbit extends Plugin {
       if (this.options.navButtons) {
         var $controls = this.$element.find(`.${this.options.nextClass}, .${this.options.prevClass}`);
         $controls.attr('tabindex', 0)
-        //also need to handle enter/return and spacebar key presses
+        // also need to handle enter/return and spacebar key presses
         .on('click.zf.orbit touchend.zf.orbit', function(e){
 	  e.preventDefault();
-          _this.changeSlide($(this).hasClass(_this.options.nextClass));
+          _this.changeSlide(this.classList.contains(_this.options.nextClass));
         });
       }
 
       if (this.options.bullets) {
         this.$bullets.on('click.zf.orbit touchend.zf.orbit', function() {
           if (/is-active/g.test(this.className)) { return false; }//if this is active, kick out of function.
-          var idx = $(this).data('slide'),
-          ltr = idx > _this.$slides.filter('.is-active').data('slide'),
+          var idx = this.getAttribute('data-slide'),
+          ltr = idx > _this.$slides.filter('.is-active').get(0).getAttribute('data-slide'), // TODO: test this
           $slide = _this.$slides.eq(idx);
 
           _this.changeSlide(ltr, $slide, idx);
@@ -348,7 +350,9 @@ class Orbit extends Plugin {
           $newSlide.addClass('is-active'),
           this.options[`animInFrom${dirIn}`],
           function(){
-            $newSlide.css({'display': 'block'}).attr('aria-live', 'polite');
+            // TODO: test this
+            $newSlide.get(0).style.display = 'block';
+            $newSlide.get(0).setAttribute('aria-live', 'polite');
         });
 
         Motion.animateOut(

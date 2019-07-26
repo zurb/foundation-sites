@@ -316,7 +316,7 @@ class DropdownMenu extends Plugin {
       }
       this.changed = true;
     }
-    $sub.css('visibility', '');
+    $sub.get(0).style.visibility = '';
     if (this.options.closeOnClick) { this._addBodyHandler(); }
     /**
      * Fires when the new dropdown pane is visible.

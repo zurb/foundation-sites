@@ -52,7 +52,7 @@ class AccordionMenu extends Plugin {
 
     var _this = this;
 
-    this.$element.find('[data-submenu]').not('.is-active').slideUp(0);//.find('a').css('padding-left', '1rem');
+    this.$element.find('[data-submenu]').not('.is-active').slideUp(0);
     this.$element.attr({
       'role': 'tree',
       'aria-multiselectable': this.options.multiOpen
@@ -302,7 +302,7 @@ class AccordionMenu extends Plugin {
    * @fires AccordionMenu#destroyed
    */
   _destroy() {
-    this.$element.find('[data-submenu]').slideDown(0).css('display', '');
+    this.$element.find('[data-submenu]').slideDown(0).get(0).style.display = ''; // TODO: test this
     this.$element.find('a').off('click.zf.accordionMenu');
     this.$element.find('[data-is-parent-link]').detach();
 

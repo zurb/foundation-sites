@@ -184,8 +184,10 @@ class Interchange extends Plugin {
     // Replacing background images
     else if (type === 'background') {
       path = path.replace(/\(/g, '%28').replace(/\)/g, '%29');
+      // TODO: test this
       this.$element
-        .css({ 'background-image': 'url(' + path + ')' })
+        .get(0).style.backgroundImage = 'url(' + path + ')';
+      this.$element
         .trigger(trigger);
     }
     // Replacing HTML

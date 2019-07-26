@@ -216,7 +216,8 @@ class ResponsiveAccordionTabs extends Plugin{
             $($liHeadsA.get(key)).attr('href',$($liHeadsA.get(key)).attr('href').replace('#','')+'#'+hash);
           };
         };
-        var isActive = $($liHeads.get(key)).hasClass('is-active');
+        // TODO: test this
+        var isActive = $liHeads.get(key).classList.contains('is-active');
         if (isActive) {
           tempValue.addClass('is-active');
         };

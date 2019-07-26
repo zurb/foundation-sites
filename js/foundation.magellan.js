@@ -182,7 +182,8 @@ class Magellan extends Plugin {
     const $oldActive = this.$active;
     let activeHash = '';
     if(typeof activeIdx !== 'undefined'){
-      this.$active = this.$links.filter('[href="#' + this.$targets.eq(activeIdx).data('magellan-target') + '"]');
+      // TODO: test this
+      this.$active = this.$links.filter('[href="#' + this.$targets.eq(activeIdx).get(0).getAttribute('data-magellan-target') + '"]');
       if (this.$active.length) activeHash = this.$active[0].getAttribute('href');
     }else{
       this.$active = $();

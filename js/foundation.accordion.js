@@ -176,7 +176,7 @@ class Accordion extends Plugin {
       console.info('Cannot toggle an accordion that is disabled.');
       return;
     }
-    if($target.parent().hasClass('is-active')) {
+    if($target.parent().get(0).classList.contains('is-active')) {
       this.up($target);
     } else {
       this.down($target);
@@ -328,7 +328,7 @@ class Accordion extends Plugin {
    * @function
    */
   _destroy() {
-    this.$element.find('[data-tab-content]').stop(true).slideUp(0).css('display', '');
+    this.$element.find('[data-tab-content]').stop(true).slideUp(0).get(0).style.display = ''; // TODO: test this
     this.$element.find('a').off('.zf.accordion');
     if(this.options.deepLink) {
       $(window).off('hashchange', this._checkDeepLink);

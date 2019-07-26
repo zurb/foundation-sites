@@ -123,7 +123,8 @@ class Equalizer extends Plugin {
     if(tooSmall){
       if(this.isOn){
         this._pauseEvents();
-        this.$watched.css('height', 'auto');
+        // TODO: test this
+        this.$watched.get(0).style.height = 'auto';
       }
     }else{
       if(!this.isOn){
@@ -148,7 +149,8 @@ class Equalizer extends Plugin {
   _reflow() {
     if(!this.options.equalizeOnStack){
       if(this._isStacked()){
-        this.$watched.css('height', 'auto');
+        // TODO: test this
+        this.$watched.get(0).style.height = 'auto';
         return false;
       }
     }
@@ -228,8 +230,8 @@ class Equalizer extends Plugin {
      * @event Equalizer#preequalized
      */
     this.$element.trigger('preequalized.zf.equalizer');
-
-    this.$watched.css('height', max);
+    // TODO: test this
+    this.$watched.get(0).style.height = max;
 
     /**
      * Fires when the heights have been applied
@@ -284,7 +286,8 @@ class Equalizer extends Plugin {
    */
   _destroy() {
     this._pauseEvents();
-    this.$watched.css('height', 'auto');
+    // TODO: test this
+    this.$watched.get(0).style.height = 'auto';
   }
 }
 
