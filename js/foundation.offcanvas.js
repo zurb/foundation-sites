@@ -326,67 +326,68 @@ class OffCanvas extends Plugin {
   }
 
   /**
-   * Tag the element given as context whether it can be scrolled up and down.
-   * Used to allow or prevent it to scroll. See `_stopScrollPropagation`.
-   *
-   * Taken and adapted from http://stackoverflow.com/questions/16889447/prevent-full-page-scrolling-ios
-   * Only really works for y, not sure how to extend to x or if we need to.
-   *
-   * @function
+   * Save current finger y-position
+   * @param event
    * @private
    */
   _recordScrollable(event) {
-    let elem = this; // called from event handler context with this as elem
-
-     // If the element is scrollable (content overflows), then...
-    if (elem.scrollHeight !== elem.clientHeight) {
-      // If we're at the top, scroll down one pixel to allow scrolling up
-      if (elem.scrollTop === 0) {
-        elem.scrollTop = 1;
-      }
-      // If we're at the bottom, scroll up one pixel to allow scrolling down
-      if (elem.scrollTop === elem.scrollHeight - elem.clientHeight) {
-        elem.scrollTop = elem.scrollHeight - elem.clientHeight - 1;
-      }
-    }
-    elem.allowUp = elem.scrollTop > 0;
-    elem.allowDown = elem.scrollTop < (elem.scrollHeight - elem.clientHeight);
-    elem.lastY = event.originalEvent.pageY;
+    const elem = this;
+    elem.lastY = event.touches[0].pageY;
   }
 
   /**
-   * Prevent the given event propagation if the element given as context can scroll.
-   * Used to preserve the element scrolling on mobile (`touchmove`) when the document
-   * scrolling is prevented. See https://git.io/zf-9707.
-   * @function
+   * Prevent further scrolling when it hits the edges
+   * @param event
    * @private
    */
-  _stopScrollPropagation(event) {
-    let elem = this; // called from event handler context with this as elem
-    let parent; // off-canvas elem if called from inner scrollbox
-    let up = event.pageY < elem.lastY;
-    let down = !up;
-    elem.lastY = event.pageY;
+  _preventDefaultAtEdges(event) {
+    const elem = this;
+    const _this = event.data;
+    const delta = elem.lastY - event.touches[0].pageY;
+    elem.lastY = event.touches[0].pageY;
 
-    if((up && elem.allowUp) || (down && elem.allowDown)) {
-      // It is not recommended to stop event propagation (the user cannot watch it),
-      // but in this case this is the only solution we have.
-      event.stopPropagation();
-
-      // If elem is inner scrollbox we are scrolling the outer off-canvas down/up once the box end has been reached
-      // This lets the user continue to touch move the off-canvas without the need to place the finger outside the scrollbox
-      if (elem.hasAttribute('data-off-canvas-scrollbox')) {
-        parent = elem.closest('[data-off-canvas], [data-off-canvas-scrollbox-outer]');
-        if (elem.scrollTop <= 1 && parent.scrollTop > 0) {
-          parent.scrollTop--;
-        } else if (elem.scrollTop >= elem.scrollHeight - elem.clientHeight - 1 && parent.scrollTop < parent.scrollHeight - parent.clientHeight) {
-          parent.scrollTop++;
-        }
-      }
-
-    } else {
+    if (!_this._canScroll(delta, elem)) {
       event.preventDefault();
     }
+  }
+
+  /**
+   * Handle continuous scrolling of scrollbox
+   * Don't bubble up to _preventDefaultAtEdges
+   * @param event
+   * @private
+   */
+  _scrollboxTouchMoved(event) {
+    const elem = this;
+    const _this = event.data;
+    const parent = elem.closest('[data-off-canvas], [data-off-canvas-scrollbox-outer]');
+    const delta = elem.lastY - event.touches[0].pageY;
+    parent.lastY = elem.lastY = event.touches[0].pageY;
+
+    event.stopPropagation();
+
+    if (!_this._canScroll(delta, elem)) {
+      if (!_this._canScroll(delta, parent)) {
+        event.preventDefault();
+      } else {
+        parent.scrollTop += delta;
+      }
+    }
+  }
+
+  /**
+   * Detect possibility of scrolling
+   * @param delta
+   * @param elem
+   * @returns boolean
+   * @private
+   */
+  _canScroll(delta, elem) {
+    const up = delta < 0;
+    const down = delta > 0;
+    const allowUp = elem.scrollTop > 0;
+    const allowDown = elem.scrollTop < elem.scrollHeight - elem.clientHeight;
+    return up && allowUp || down && allowDown;
   }
 
   /**
@@ -428,9 +429,9 @@ class OffCanvas extends Plugin {
     if (this.options.contentScroll === false) {
       $('body').addClass('is-off-canvas-open').on('touchmove', this._stopScrolling);
       this.$element.on('touchstart', this._recordScrollable);
-      this.$element.on('touchmove', this._stopScrollPropagation);
+      this.$element.on('touchmove', this, this._preventDefaultAtEdges);
       this.$element.on('touchstart', '[data-off-canvas-scrollbox]', this._recordScrollable);
-      this.$element.on('touchmove', '[data-off-canvas-scrollbox]', this._stopScrollPropagation);
+      this.$element.on('touchmove', '[data-off-canvas-scrollbox]', this, this._scrollboxTouchMoved);
     }
 
     if (this.options.contentOverlay === true) {
@@ -530,9 +531,9 @@ class OffCanvas extends Plugin {
       if (this.options.contentScroll === false) {
         $('body').removeClass('is-off-canvas-open').off('touchmove', this._stopScrolling);
         this.$element.off('touchstart', this._recordScrollable);
-        this.$element.off('touchmove', this._stopScrollPropagation);
+        this.$element.off('touchmove', this._preventDefaultAtEdges);
         this.$element.off('touchstart', '[data-off-canvas-scrollbox]', this._recordScrollable);
-        this.$element.off('touchmove', '[data-off-canvas-scrollbox]', this._stopScrollPropagation);
+        this.$element.off('touchmove', '[data-off-canvas-scrollbox]', this._scrollboxTouchMoved);
       }
 
       if (this.options.trapFocus === true) {
