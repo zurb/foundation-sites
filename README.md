@@ -65,6 +65,10 @@ yarn test:visual
 
 Check out [CONTRIBUTING.md](CONTRIBUTING.md) to see how to report an issue or submit a bug fix or a new feature, and our [contributing guide](https://get.foundation/get-involved/contribute.html) to learn how you can contribute more globally to Foundation. You can also browse the [Help Wanted](https://github.com/foundation/foundation-sites/labels/help%20wanted) tag in our issue tracker to find things to do.
 
+## Testing powered by 
+<a target="_blank" href="https://www.browserstack.com/"><img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png"></a><br>
+[BrowserStack Open-Source Program](https://www.browserstack.com/open-source)
+
 ## Training
 
 Want the guided tour to Foundation from the team that built it? The ZURB team offers comprehensive training courses for developers of all skill levels. If you're new to Foundation, check out the [Introduction to Foundation Course](http://zurb.com/university/foundation-intro?utm_source=Github%20Repo&utm_medium=website&utm_campaign=readme&utm_content=readme%20training%20link) to kickstart your skills, amplify your productivity, and get a comprehensive overview of everything Foundation has to offer. More advanced users should check out the [Advanced Foundation Course](http://zurb.com/university/advanced-foundation-training?utm_source=Github%20Repo&utm_medium=website&utm_campaign=readme&utm_content=readme%20training%20link) to learn the Advanced skills that ZURB uses to deliver quality client work in short timeframes.
