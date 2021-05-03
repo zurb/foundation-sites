@@ -44,28 +44,25 @@
   width: 0;
   height: 0;
 
-  border: inset $triangle-size;
+  border-style: solid;
+  border-width: $triangle-size;
 
   content: '';
 
   @if ($triangle-direction == down) {
     border-bottom-width: 0;
-    border-top-style: solid;
     border-color: $triangle-color transparent transparent;
   }
   @if ($triangle-direction == up) {
     border-top-width: 0;
-    border-bottom-style: solid;
     border-color: transparent transparent $triangle-color;
   }
   @if ($triangle-direction == right) {
     border-right-width: 0;
-    border-left-style: solid;
     border-color: transparent transparent transparent $triangle-color;
   }
   @if ($triangle-direction == left) {
     border-left-width: 0;
-    border-right-style: solid;
     border-color: transparent $triangle-color transparent transparent;
   }
 }
