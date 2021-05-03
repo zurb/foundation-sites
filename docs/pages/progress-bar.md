@@ -27,7 +27,7 @@ If the value of the progress bar is not numeric, also add the attribute `aria-va
 </div>
 
 ```html_example
-<div class="progress" role="progressbar" tabindex="0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+<div class="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
   <div class="progress-meter"></div>
 </div>
 ```
@@ -35,7 +35,7 @@ If the value of the progress bar is not numeric, also add the attribute `aria-va
 Add a `width` CSS property to the inner meter to fill the progress bar.
 
 ```html_example
-<div class="progress" role="progressbar" tabindex="0" aria-valuenow="50" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
+<div class="progress" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
   <div class="progress-meter" style="width: 50%"></div>
 </div>
 ```
@@ -55,7 +55,7 @@ A progress bar can be styled with the `.secondary`, `.success`, `.warning`, and 
 </div>
 
 ```html_example
-<div class="secondary progress" role="progressbar" tabindex="0" aria-valuenow="25" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
+<div class="secondary progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
   <div class="progress-meter" style="width: 25%"></div>
 </div>
 
@@ -87,7 +87,7 @@ You can add text inside the meter of a progress bar. Make sure the text you use 
 </div>
 
 ```html_example
-<div class="progress" role="progressbar" tabindex="0" aria-valuenow="25" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
+<div class="progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
   <span class="progress-meter" style="width: 25%">
     <span class="progress-meter-text">25%</span>
   </span>
@@ -137,4 +137,16 @@ The meter automatically colors itself based on the current values, and the defin
 <meter value="30" min="0" low="33" high="66" optimum="100" max="100"></meter>
 <meter value="50" min="0" low="33" high="66" optimum="100" max="100"></meter>
 <meter value="100" min="0" low="33" high="66" optimum="100" max="100"></meter>
+```
+
+---
+
+## Screen Readers
+
+Test the progress bar with different `aria-valuenow` values in a couple of screen readers. The screen reader behavior may not be always obvious.
+
+If the value of the progress bar is numeric, make sure the range is defined correctly (extracting `aria-valuemin` from `aria-valuemax` defines the full range). For percentage progress bars (0-100%) the value range is typically 100 (`aria-valuemin="0"` and `aria-valuemax="100"`). Most screen readers will calculate the announced percentage based on these numbers with the following formula:
+
+```
+aria-valuenow / (aria-valuemax - aria-valuemin) = announced percentage
 ```
