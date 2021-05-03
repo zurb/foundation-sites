@@ -31,7 +31,9 @@ class Accordion extends Plugin {
       'ENTER': 'toggle',
       'SPACE': 'toggle',
       'ARROW_DOWN': 'next',
-      'ARROW_UP': 'previous'
+      'ARROW_UP': 'previous',
+      'HOME': 'first',
+      'END': 'last',
     });
   }
 
@@ -42,10 +44,8 @@ class Accordion extends Plugin {
   _init() {
     this._isInitializing = true;
 
-    this.$element.attr('role', 'tablist');
     this.$tabs = this.$element.children('[data-accordion-item]');
 
-    this.$tabs.attr({'role': 'presentation'});
 
     this.$tabs.each(function(idx, el) {
       var $el = $(el),
@@ -55,13 +55,11 @@ class Accordion extends Plugin {
 
       $el.find('a:first').attr({
         'aria-controls': id,
-        'role': 'tab',
         'id': linkId,
-        'aria-expanded': false,
-        'aria-selected': false
+        'aria-expanded': false
       });
 
-      $content.attr({'role': 'tabpanel', 'aria-labelledby': linkId, 'aria-hidden': true, 'id': id});
+      $content.attr({'role': 'region', 'aria-labelledby': linkId, 'aria-hidden': true, 'id': id});
     });
 
     var $initActive = this.$element.find('.is-active').children('[data-tab-content]');
@@ -154,6 +152,18 @@ class Accordion extends Plugin {
               var $a = $elem.prev().find('a').focus();
               if (!_this.options.multiExpand) {
                 $a.trigger('click.zf.accordion')
+              }
+            },
+            first: function() {
+              var $a = _this.$tabs.first().find('.accordion-title').focus();
+              if (!_this.options.multiExpand) {
+                 $a.trigger('click.zf.accordion');
+              }
+            },
+            last: function() {
+              var $a = _this.$tabs.last().find('.accordion-title').focus();
+              if (!_this.options.multiExpand) {
+                 $a.trigger('click.zf.accordion');
               }
             },
             handled: function() {
@@ -270,8 +280,7 @@ class Accordion extends Plugin {
     $targetItem.addClass('is-active');
 
     $(`#${targetContentId}`).attr({
-      'aria-expanded': true,
-      'aria-selected': true
+      'aria-expanded': true
     });
 
     $target.finish().slideDown(this.options.slideSpeed, () => {
@@ -298,8 +307,7 @@ class Accordion extends Plugin {
     $targetItem.removeClass('is-active');
 
     $(`#${targetContentId}`).attr({
-     'aria-expanded': false,
-     'aria-selected': false
+     'aria-expanded': false
     });
 
     $target.finish().slideUp(this.options.slideSpeed, () => {

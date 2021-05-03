@@ -39,13 +39,6 @@ describe('Accordion', function() {
       plugin.$element.should.be.an('object');
       plugin.options.should.be.an('object');
     });
-
-    it('applies role="presentation" to the list item to conform with WAI', function () {
-      $html = $(template).appendTo('body');
-      plugin = new Foundation.Accordion($html, {allowAllClosed: true});
-
-      $html.find('.accordion-item').eq(0).should.have.attr('role', 'presentation');
-    });
   });
 
   describe('up()', function(done) {
@@ -67,7 +60,6 @@ describe('Accordion', function() {
 
       plugin.up($html.find('.accordion-content').eq(0));
       $html.find('.accordion-title').eq(0).should.have.attr('aria-expanded', 'false');
-      $html.find('.accordion-title').eq(0).should.have.attr('aria-selected', 'false');
     });
 
     it('not closes the open container if allowAllClosed is false', function() {
@@ -98,7 +90,6 @@ describe('Accordion', function() {
 
       plugin.down($html.find('.accordion-content').eq(1));
       $html.find('.accordion-title').eq(1).should.have.attr('aria-expanded', 'true');
-      $html.find('.accordion-title').eq(1).should.have.attr('aria-selected', 'true');
     });
 
     it('closes open container if multiExpand is false', function(done) {
@@ -172,6 +163,30 @@ describe('Accordion', function() {
       $html.find('.accordion-content').eq(1).should.have.attr('aria-hidden', 'false');
       // Check if focus was moved
       $html.find('.accordion-title').eq(1)[0].should.be.equal(document.activeElement);
+    });
+    it('opens first panel on HOME', function() {
+      $html = $(template).appendTo('body');
+      plugin = new Foundation.Accordion($html, {});
+
+      $html.find('.accordion-title').eq(1).focus()
+        .trigger(window.mockKeyboardEvent('HOME'));
+
+      $html.find('.accordion-content').eq(0).should.be.visible;
+      $html.find('.accordion-content').eq(0).should.have.attr('aria-hidden', 'false');
+      // Check if focus was moved
+      $html.find('.accordion-title').eq(0)[0].should.be.equal(document.activeElement);
+   });
+    it('opens last panel on END', function() {
+      $html = $(template).appendTo('body');
+      plugin = new Foundation.Accordion($html, {});
+
+      $html.find('.accordion-title').eq(1).focus()
+        .trigger(window.mockKeyboardEvent('END'));
+
+      $html.find('.accordion-content').eq(2).should.be.visible;
+      $html.find('.accordion-content').eq(2).should.have.attr('aria-hidden', 'false');
+      // Check if focus was moved
+      $html.find('.accordion-title').eq(2)[0].should.be.equal(document.activeElement);
     });
     it('opens related panel on ENTER', function() {
       $html = $(template).appendTo('body');
