@@ -340,6 +340,9 @@ class Drilldown extends Plugin {
         if (parentSubMenu.length) {
           _this._show(parentSubMenu);
         }
+        else {
+          _this.$currentMenu = _this.$element;
+        }
       });
   }
 
