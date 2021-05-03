@@ -91,6 +91,23 @@ $breakpoints: (
 
 Changing the widths of any of the breakpoints is as easy as changing the pixel values in this map. Note that here there are two extra breakpoints: `xlarge` and `xxlarge`. We don't use these for any components, and also don't output any CSS classes that use them by default.
 
+Please note that the order of breakpoints must be in ascending order so that keywords like `down` in the `breakpoint` function below will work as expected e.g.
+
+```js
+├─ xlarge max
+│
+├─ xlarge min
+├─ large max    ┓
+│               │
+├─ large min    │
+├─ medium max   │
+│               │   "xlarge down" Breakpoint
+├─ medium min   │
+├─ small max    │
+│               │
+...
+```
+
 You can change that by modifying the `$breakpoint-classes` variable in your settings file. This is a list of breakpoint names. Adding or removing names from the list will change the CSS class output. It looks like this by default:
 
 ```scss
