@@ -527,13 +527,14 @@ class Drilldown extends Plugin {
    * @function
    */
   _destroy() {
+    $('body').off('.zf.drilldown');
     if(this.options.scrollTop) this.$element.off('.zf.drilldown',this._bindHandler);
     this._hideAll();
 	  this.$element.off('mutateme.zf.trigger');
     Nest.Burn(this.$element, 'drilldown');
     this.$element.unwrap()
                  .find('.js-drilldown-back, .is-submenu-parent-item').remove()
-                 .end().find('.is-active, .is-closing, .is-drilldown-submenu').removeClass('is-active is-closing is-drilldown-submenu')
+                 .end().find('.is-active, .is-closing, .is-drilldown-submenu').removeClass('is-active is-closing is-drilldown-submenu').off('transitionend otransitionend webkitTransitionEnd')
                  .end().find('[data-submenu]').removeAttr('aria-hidden tabindex role');
     this.$submenuAnchors.each(function() {
       $(this).off('.zf.drilldown');
