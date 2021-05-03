@@ -5,7 +5,7 @@ import { Keyboard } from './foundation.util.keyboard';
 import { Motion } from './foundation.util.motion';
 import { Timer } from './foundation.util.timer';
 import { onImagesLoaded } from './foundation.util.imageLoader';
-import { GetYoDigits } from './foundation.core.utils';
+import { GetYoDigits, transitionend } from './foundation.core.utils';
 import { Plugin } from './foundation.core.plugin';
 import { Touch } from './foundation.util.touch'
 
@@ -68,6 +68,14 @@ class Orbit extends Plugin {
     this.$element.attr({
       'data-resize': id,
       'id': id
+    });
+
+    // when slide children contain css transition, it should not propagate to parent.
+    this.$slides.children().each(function(){
+      var element = $(this);
+      element.on(transitionend(element), function(event){
+        event.stopPropagation();
+      });
     });
 
     if (!initActive.length) {

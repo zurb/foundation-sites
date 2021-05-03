@@ -6,16 +6,16 @@ describe('Orbit', function() {
       <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
       <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
       <li class="is-active orbit-slide">
-        Slide #1 content.
+        <div>Slide #1 content.</div>
       </li>
       <li class="orbit-slide">
-        Slide #2 content.
+        <div>Slide #2 content.</div>
       </li>
       <li class="orbit-slide">
-        Slide #3 content.
+        <div>Slide #3 content.</div>
       </li>
       <li class="orbit-slide">
-        Slide #4 content.
+        <div>Slide #4 content.</div>
       </li>
     </ul>
     <nav class="orbit-bullets">
@@ -140,6 +140,28 @@ describe('Orbit', function() {
         done();
       });
       plugin.changeSlide(true);
+    });
+    it('should not be affected by children\'s transition end', function(done){
+      $html = $(template).appendTo('body');
+      plugin = new Foundation.Orbit($html, {useMUI: true});
+
+      $html.find('.orbit-slide.is-active div')
+        .css('transition-duration', '100ms')
+        .addClass('fade-in mui-enter');
+      plugin.changeSlide(true);
+
+      setTimeout(function(){
+          $html.find('.orbit-slide').eq(0).should.have.class('slide-out-left');
+          $html.find('.orbit-slide').eq(1).should.have.class('slide-in-right');
+      }, 200);
+
+      setTimeout(function(){
+        $html.find('.orbit-slide').eq(0).should.not.have.attr('class', 'slide-out-left');
+        $html.find('.orbit-slide').eq(1).should.not.have.attr('class', 'slide-in-left');
+        $html.find('.orbit-slide').eq(0).should.be.hidden;
+        $html.find('.orbit-slide').eq(1).should.be.visible;
+        done();
+      }, 550);
     });
   });
 
