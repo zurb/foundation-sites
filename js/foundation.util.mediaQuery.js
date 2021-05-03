@@ -88,10 +88,22 @@ var MediaQuery = {
       this.isInitialized = true;
     }
 
+    var $metaViewport =  $('meta[name="viewport"]');
+    var $metaViewportFit = $('meta[content*="viewport-fit=cover"]');
+    // add meta viewport tag if not present
+    if (!$metaViewport.length) {
+      $('<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">').appendTo(document.head);
+    } else {
+      // add viewport-fit=cover if not present which is mandatory for the use of css environment variables
+      if (!$metaViewportFit.length) {
+        $metaViewport.attr('content', (i, value) => `${value || ""}, viewport-fit=cover`);
+      }
+    }
+
     var self = this;
     var $meta = $('meta.foundation-mq');
     if(!$meta.length){
-      $('<meta class="foundation-mq">').appendTo(document.head);
+      $('<meta name="generator" content="ZURB Foundation for Sites" class="foundation-mq">').appendTo(document.head);
     }
 
     var extractedStyles = $('.foundation-mq').css('font-family');
