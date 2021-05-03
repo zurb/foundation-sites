@@ -494,3 +494,7 @@ declare var Foundation: FoundationSites.FoundationSitesStatic;
 declare module "Foundation" {
   export = Foundation;
 }
+
+declare module "foundation-sites" {
+  export = Foundation;
+}
