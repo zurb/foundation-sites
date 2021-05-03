@@ -339,24 +339,6 @@ describe('Drilldown Menu', function() {
 
       $html.find('> li:nth-child(1) > ul').should.have.class('is-closing');
     });
-    it('moves focus to next element on TAB', function() {
-      $html = $(template).appendTo('body');
-      plugin = new Foundation.Drilldown($html, {});
-
-      $html.find('> li:nth-child(1) > a').focus()
-        .trigger(window.mockKeyboardEvent('TAB'));
-
-      document.activeElement.should.be.equal($html.find('> li:nth-child(2) > a')[0]);
-    });
-    it('moves focus to previous element on TAB', function() {
-      $html = $(template).appendTo('body');
-      plugin = new Foundation.Drilldown($html, {});
-
-      $html.find('> li:nth-child(2) > a').focus()
-        .trigger(window.mockKeyboardEvent('TAB', {shift: true}));
-
-      document.activeElement.should.be.equal($html.find('> li:nth-child(1) > a')[0]);
-    });
     it('moves focus to next element on ARROW_DOWN', function() {
       $html = $(template).appendTo('body');
       plugin = new Foundation.Drilldown($html, {});
