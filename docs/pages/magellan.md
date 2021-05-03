@@ -39,7 +39,7 @@ You can use Magellan with any navigation element, like our [Menu](menu.html) or 
 
 ## Sticky Navigation
 
-You can use Magellan with our Sticky plugin to create a persistent navigation header or sidebar.
+You can use Magellan with our [Sticky plugin](sticky.html) to create a persistent navigation header or sidebar.
 
 <div class="docs-codepen-container">
   <a class="codepen-logo-link" href="https://codepen.io/ZURBFoundation/pen/gWKLqV?editors=1100" target="_blank"><img src="{{root}}assets/img/logos/edit-in-browser.svg" class="" height="" width="" alt="edit on codepen button"></a>
@@ -90,8 +90,8 @@ This below example is a simplified version of the table of contents on the right
 
 ---
 
-## Browser history
+## Browser History
 
-When the `data-deep-link` option is set to `true`, the active section of the magellan is recorded by adding a hash with the active magellan section ID to the browser URL. By default, magellan *replace* the browser history (using `history.replaceState()`).
+When the `data-deep-link` option is set to `true`, the active section of Magellan is recorded by adding a hash with the active Magellan section ID to the browser URL. By default, Magellan *replaces* the browser history (using `history.replaceState()`).
 
-Modify this behavior by using attribute `data-update-history="true"` to *append* to the browser history (using `history.pushState()`). In the latter case the browser back button will track each section the magellan gone through (in most case, this is not recommended).
+Modify this behavior by using the attribute `data-update-history="true"` to *append* to the browser history (using `history.pushState()`). In the latter case, the browser's back button will track each section Magellan has gone through (in most case, this is not recommended).
