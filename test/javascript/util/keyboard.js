@@ -177,6 +177,20 @@ describe('Keyboard util', function() {
 
       $html.remove();
     });
+
+    it('does sort by tabindex', function() {
+      let $html = $(`<div>
+            <a href="#" tabindex="1">Link1</a>
+            <a href="#">Link3</a>
+            <a href="#" tabindex="2">Link2</a>
+          </div>`).appendTo('body');
+
+      let $focusable = Foundation.Keyboard.findFocusable($html);
+
+      $focusable.eq(2)[0].should.be.equal($html.find('a').eq(1)[0]);
+
+      $html.remove();
+    });
   });
 
   describe('trapFocus()', function() {

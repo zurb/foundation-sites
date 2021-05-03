@@ -32,6 +32,32 @@ function findFocusable($element) {
   return $element.find('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]').filter(function() {
     if (!$(this).is(':visible') || $(this).attr('tabindex') < 0) { return false; } //only have visible elements and those that have a tabindex greater or equal 0
     return true;
+  })
+  .sort( function( a, b ) {
+    if ($(a).attr('tabindex') == $(b).attr('tabindex')) {
+      return 0;
+    }
+    let aTabIndex = parseInt($(a).attr('tabindex')),
+      bTabIndex = parseInt($(b).attr('tabindex'));
+    // Undefined is treated the same as 0
+    if (typeof $(a).attr('tabindex') == 'undefined' && bTabIndex > 0) {
+      return 1;
+    }
+    if (typeof $(b).attr('tabindex') == 'undefined' && aTabIndex > 0) {
+      return -1;
+    }
+    if (aTabIndex == 0 && bTabIndex > 0) {
+      return 1;
+    }
+    if (bTabIndex == 0 && aTabIndex > 0) {
+      return -1;
+    }
+    if (aTabIndex < bTabIndex) {
+      return -1;
+    }
+    if (aTabIndex > bTabIndex) {
+      return 1;
+    }
   });
 }
 
