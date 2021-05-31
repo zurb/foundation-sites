@@ -6,6 +6,11 @@
 /// @group functions
 ////
 
+////
+/// Patch to fix issue #12080
+$-zf-pb-value: null;
+
+////
 /// Creates an inner box-shadow for only one side
 ///
 /// @param {Keyword} $side - Side the shadow is supposed to appear. Can be `top`, `left`, `right` or `bottom`.

@@ -6,6 +6,12 @@
 /// @group breakpoints
 ////
 
+////
+/// Patch to fix issue #12080
+
+$-zf-size: null;
+////
+
 /// A list of named breakpoints. You can use these with the `breakpoint()` mixin to quickly create media queries.
 /// @type Map
 $breakpoints: (
