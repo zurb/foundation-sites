@@ -458,6 +458,10 @@ $(document).foundation();
 <input id="max" type="number" data-validator="greater_than" data-greater-than="min" required>
 ```
 
+## jQuery Conflict
+
+When creating a type `submit` button, make sure to _avoid_ using `name="submit"` otherwise your form won't submit. This is due to [jQuery limitations](https://api.jquery.com/submit/) (see Additional Notes).
+
 ## Accessibility
 
 By default, Abide will add some accessibility attributes to your form elements. It is highly recommended to keep this option active as it improve the usability of your forms for disabled people. [Lean more about Accessibility in Foundation](accessibility.html).
